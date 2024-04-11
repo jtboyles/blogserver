@@ -13,6 +13,9 @@ from inline_markdown import (
     extract_markdown_links
 )
 
+class Test_Text_To_Textnodes(unittest.TestCase):
+    def test_eq(self):
+
 class Test_Split_Nodes_Delimiter(unittest.TestCase):
     def test_eq(self):
         split_test = [
@@ -46,13 +49,8 @@ class Test_Split_Nodes_Delimiter(unittest.TestCase):
             for i in range(j):
                 self.assertEqual(split_test[j][i].repr(), split_result[j][i].repr())
 
-class Test_Extract_Markdown_Images(unittest.TestCase):
+class Test_Split_Nodes_Image(unittest.TestCase):
     def test_eq(self):
-        self.assertEqual(extract_markdown_images("this is a bunch of text with ![img](https://regexr.com/)"), [('img', 'https://regexr.com/')])
-        self.assertEqual(extract_markdown_links("this is a bunch of text with ![test_one](https://regexr.com/)![test_two](https://google.com/)"), [('test_one', 'https://regexr.com/'), ('test_two', 'https://google.com/')])
-
-        self.assertEqual(extract_markdown_links("this is a bunch of text with ![img](https://regexr.com/)"), None)
-
         test_image_nodes = [
             TextNode(
                 "This is text with an ![image](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png) and another ![second image](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/3elNhQu.png)",
@@ -87,6 +85,12 @@ class Test_Extract_Markdown_Images(unittest.TestCase):
             result_result_node = [m.repr() for m in result_image_nodes[i]]
             self.assertEqual(test_result_node, result_result_node)
 
+class Test_Extract_Markdown_Images(unittest.TestCase):
+    def test_eq(self):
+        self.assertEqual(extract_markdown_images("this is a bunch of text with ![img](https://regexr.com/)"), [('img', 'https://regexr.com/')])
+        self.assertEqual(extract_markdown_links("this is a bunch of text with ![test_one](https://regexr.com/)![test_two](https://google.com/)"), [('test_one', 'https://regexr.com/'), ('test_two', 'https://google.com/')])
+
+        self.assertEqual(extract_markdown_links("this is a bunch of text with ![img](https://regexr.com/)"), None)
 
 class Test_Extract_Markdown_Links(unittest.TestCase):
     def test_eq(self):
