@@ -2,7 +2,7 @@ import unittest
 
 from textnode import (
     TextNode,
-    Text_Type
+    Text_Type,
 )
 
 from inline_markdown import (
@@ -10,18 +10,23 @@ from inline_markdown import (
     split_nodes_image,
     split_nodes_link,
     extract_markdown_images,
-    extract_markdown_links
+    extract_markdown_links,
+    text_to_textnodes
 )
 
 class Test_Text_To_Textnodes(unittest.TestCase):
     def test_eq(self):
+        testlol = text_to_textnodes("Test lol **what** the *fudge* is going `on` hehe heck")
+
+        for i in testlol:
+            print(i.repr())
 
 class Test_Split_Nodes_Delimiter(unittest.TestCase):
     def test_eq(self):
         split_test = [
                 split_nodes_delimiter(TextNode("This is *text* with a * in it", "text"), "*", "bold"),
                 split_nodes_delimiter(TextNode("This is -text- with -a- - in it", "text"), "-", "italic"),
-                split_nodes_delimiter(TextNode("This is text with a `code block` word", "code"), "`", "code")
+                split_nodes_delimiter(TextNode("This is text with a `code block` word", "text"), "`", "code")
         ]
 
         split_result = [

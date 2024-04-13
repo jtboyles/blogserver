@@ -16,11 +16,21 @@ def text_to_textnodes(text):
         Text_Type.ITALIC: "*",
         Text_Type.CODE: "`"
     }
-    # result = []
 
-    print(split_nodes_delimiter(test_node, delim_types[Text_Type.BOLD], Text_Type.BOLD))
+    temp_list = []
+    for i in delim_types:
+        if len(temp_list) == 0:
+            temp_list = split_nodes_delimiter(test_node, delim_types[Text_Type.BOLD], Text_Type.BOLD)
+        else:
+            temp_result = []
+            for j in temp_list:
+                temp_result += split_nodes_delimiter(j, delim_types[i], i)
 
+            temp_list = temp_result
 
+    for m in temp_list:
+        print(f"TESTING---{m.repr()}")
+    return temp_list
 
 def split_nodes_delimiter(old_nodes, delimiter, text_type):
     if not isinstance(old_nodes, TextNode):
@@ -30,7 +40,11 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
     node_len = len(new_node)
     max_end = len(new_node) - 1
 
-    idx = 0
+    new_delim = list(delimiter)
+    delim_len = len(delimiter)
+    before_delim = delim_len - 1
+    check_delim_len = 0
+
     idx_start = 0
     idx_end = 0
     closed_delim = 0
@@ -38,23 +52,30 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
     result = []
     add_result = lambda x, y, z: result.append(TextNode(''.join(new_node[x:y]), z))
 
-    for i in new_node:
-        if i == delimiter:
-            closed_delim += 1
+    for i in range(len(new_node)):
+        if new_node[i] == new_delim[check_delim_len]:
+            check_delim_len += 1
+            if check_delim_len == delim_len:
+                closed_delim += 1
+                check_delim_len = 0
 
-            if closed_delim % 2 == 0 and idx != 0:
-                add_result(idx_end, idx_start, Text_Type.TEXT)
-                add_result(idx_start + 1, idx, text_type)
-                idx_end = idx + 1
-            else:
-                idx_start = idx
+                if closed_delim % 2 == 0 and i != 0:
+                    add_result(idx_end, idx_start, old_nodes.text_type)
+                    add_result(idx_start + delim_len, i - before_delim, text_type)
+                    idx_end = i + 1
+                else:
+                    idx_start = i - before_delim
+        else:
+            check_delim_len = 0
 
-        if idx == max_end:
-            add_result(idx_end, node_len, Text_Type.TEXT)
+        if i == max_end:
+            add_result(idx_end, node_len, old_nodes.text_type)
 
-        idx += 1
     return result
 
+# TODO: make single split_node func; make image/link functions call it instead
+def split_nodes_image(old_nodes):
+    return split_nodes(old_nodes, Text_Type.IMAGE)
 def split_nodes_image(old_nodes):
     check_node = re.compile(r"(!\[[^\]]*(?:image|img)[^\]]*\]\((?:(?:https?:\/\/)?(?:[^\)]*\.\w+\/)[^\)]*?\)))")
     add_node = lambda text, type, *url: TextNode(text, type, url[0] if url else None) if len(text) > 0 else None
