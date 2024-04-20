@@ -16,10 +16,36 @@ from inline_markdown import (
 
 class Test_Text_To_Textnodes(unittest.TestCase):
     def test_eq(self):
-        testlol = text_to_textnodes("Test lol **what** the *fudge* is going `on` hehe heck")
+        testlol = text_to_textnodes("Test lol **what** the *fudge* is going `on` hehe heck ![image](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png) hehe")
 
-        for i in testlol:
-            print(i.repr())
+        ttn_test = [
+            "This is **text** with an *italic* word and a `code block` and an ![image](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png) and a ![link](https://boot.dev)"
+
+
+        ]
+        ttn_result = [
+            [
+                TextNode("This is ", Text_Type.TEXT),
+                TextNode("text", Text_Type.BOLD),
+                TextNode(" with an ", Text_Type.TEXT),
+                TextNode("italic", Text_Type.ITALIC),
+                TextNode(" word and a ", Text_Type.TEXT),
+                TextNode("code block", Text_Type.CODE),
+                TextNode(" and an ", Text_Type.TEXT),
+                TextNode("image", Text_Type.IMAGE, "https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png"),
+                TextNode(" and a ", Text_Type.TEXT),
+                TextNode("link", Text_Type.LINK, "https://boot.dev"),
+            ]
+
+        ]
+
+        for i in range(len(ttn_result)):
+            temp_test = text_to_textnodes(ttn_test[i])
+
+            test_one = [x.repr() for x in temp_test]
+            test_two = [x.repr() for x in ttn_result[i]]
+
+            self.assertEqual(test_one, test_two)
 
 class Test_Split_Nodes_Delimiter(unittest.TestCase):
     def test_eq(self):
@@ -69,9 +95,7 @@ class Test_Split_Nodes_Image(unittest.TestCase):
                 TextNode("This is text with an ", Text_Type.TEXT),
                 TextNode("image", Text_Type.IMAGE, "https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png"),
                 TextNode(" and another ", Text_Type.TEXT),
-                TextNode(
-                    "second image", Text_Type.IMAGE, "https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/3elNhQu.png"
-                ),
+                TextNode("second image", Text_Type.IMAGE, "https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/3elNhQu.png"),
             ],
             [
                 TextNode("this is a bunch of other text with ", Text_Type.TEXT),
