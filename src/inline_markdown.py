@@ -67,16 +67,22 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
                 check_delim_len = 0
 
                 if closed_delim % 2 == 0 and i != 0:
-                    add_result(idx_end, idx_start, old_nodes.text_type)
-                    add_result(idx_start + delim_len, i - before_delim, text_type)
-                    idx_end = i + 1
+                    if (i - idx_start) == delim_len:
+                        closed_delim = 0
+                    else:
+                        add_result(idx_end, idx_start, old_nodes.text_type)
+                        add_result(idx_start + delim_len, i - before_delim, text_type)
+                        idx_end = i + 1
                 else:
                     idx_start = i - before_delim
         else:
             check_delim_len = 0
 
         if i == max_end:
-            add_result(idx_end, node_len, old_nodes.text_type)
+            if closed_delim == 1:
+                add_result(0, node_len, old_nodes.text_type)
+            else:
+                add_result(idx_end, node_len, old_nodes.text_type)
 
     return result
 

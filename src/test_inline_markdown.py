@@ -16,13 +16,11 @@ from inline_markdown import (
 
 class Test_Text_To_Textnodes(unittest.TestCase):
     def test_eq(self):
-        testlol = text_to_textnodes("Test lol **what** the *fudge* is going `on` hehe heck ![image](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png) hehe")
-
         ttn_test = [
-            "This is **text** with an *italic* word and a `code block` and an ![image](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png) and a ![link](https://boot.dev)"
-
-
+            "This is **text** with an *italic* word and a `code block` and an ![image](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png) and a ![link](https://boot.dev)",
+            "**this** is text with *a* more `extreme` example ![ein](of things) that could go **wrong"
         ]
+
         ttn_result = [
             [
                 TextNode("This is ", Text_Type.TEXT),
@@ -35,8 +33,17 @@ class Test_Text_To_Textnodes(unittest.TestCase):
                 TextNode("image", Text_Type.IMAGE, "https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png"),
                 TextNode(" and a ", Text_Type.TEXT),
                 TextNode("link", Text_Type.LINK, "https://boot.dev"),
+            ],
+            [
+                TextNode("this", Text_Type.BOLD),
+                TextNode(" is text with ", Text_Type.TEXT),
+                TextNode("a", Text_Type.ITALIC),
+                TextNode(" more ", Text_Type.TEXT),
+                TextNode("extreme", Text_Type.CODE),
+                TextNode(" example ", Text_Type.TEXT),
+                TextNode("ein", Text_Type.LINK, "of things"),
+                TextNode(" that could go **wrong", Text_Type.TEXT)
             ]
-
         ]
 
         for i in range(len(ttn_result)):
