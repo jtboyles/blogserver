@@ -1,9 +1,18 @@
 import re
 
+from htmlnode import text_node_to_html_node
 from textnode import (
     TextNode,
     Text_Type
 )
+
+def text_to_htmlnodes(text):
+    result = []
+
+    for i in text_to_textnodes(text):
+        result.append(text_node_to_html_node(i))
+
+    return result
 
 def text_to_textnodes(text):
     if not isinstance(text, TextNode):
@@ -20,7 +29,7 @@ def text_to_textnodes(text):
     temp_list = split_nodes_link(test_node)
     temp_result = []
     for i in temp_list:
-        if i.text_type == "link":
+        if i.text_type == Text_Type.LINK:
             temp_result += [i]
         else:
             temp_result += split_nodes_image(i)
