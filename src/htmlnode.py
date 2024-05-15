@@ -8,7 +8,7 @@ class HTMLNode():
         self.props = props
 
     def to_html(self):
-        pass
+        return ''
 
     def props_to_html(self):
         if self.props == None:
@@ -53,6 +53,7 @@ class ParentNode(HTMLNode):
             return f"<{self.tag}>{self.children[0].to_html()}</{self.tag}>"
 
         tempNode = ParentNode(self.tag, self.children[1:], self.props)
+
         tempList = list(tempNode.to_html())
         idx = len(self.tag) + 2
         tempList.insert(idx, self.children[0].to_html())

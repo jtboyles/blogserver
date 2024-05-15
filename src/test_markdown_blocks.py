@@ -72,6 +72,7 @@ class Test_Markdown_To_HTMLNode(unittest.TestCase):
             "HTMLNode(div, None, [HTMLNode(p, None, [HTMLNode(None, This is , None, None), HTMLNode(b, bolded, None, None), HTMLNode(None,  paragraph, None, None)], None), HTMLNode(p, None, [HTMLNode(None, This is another paragraph with , None, None), HTMLNode(i, italic, None, None), HTMLNode(None,  text and , None, None), HTMLNode(code, code, None, None), HTMLNode(None,  here\nThis is the same paragraph on a new line, None, None)], None), HTMLNode(ul, None, [HTMLNode(li, None, [HTMLNode(None, This is a list, None, None)], None), HTMLNode(li, None, [HTMLNode(None, with items, None, None)], None)], None)], None)"
         ]
 
+        print(markdown_to_HTMLNode(test_case[0]).to_html())
         for i in range(len(test_case)):
             self.assertEqual(markdown_to_HTMLNode(test_case[i]).__repr__(), result_case[i])
 

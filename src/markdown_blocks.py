@@ -2,7 +2,7 @@ import re
 
 from textnode import Text_Type
 from inline_markdown import text_to_htmlnodes
-from htmlnode import HTMLNode, ParentNode, LeafNode
+from htmlnode import ParentNode, LeafNode
 
 class BlockType:
     PARAGRAPH       = "paragraph"
@@ -26,6 +26,19 @@ class BlockTag:
 class REqual(str):
     def __eq__(self, pattern):
         return True if re.fullmatch(pattern, self, re.DOTALL) else False
+
+def markdown_to_HTML(markdown):
+    return markdown_to_HTMLNode(markdown).to_html()
+
+def markdown_to_HTMLNode(markdown):
+    blocks = markdown_to_blocks(markdown)
+    result = []
+
+    for i in blocks:
+        convert_func = convert_block(block_to_blocktype(i))
+        result.append(convert_func(i))
+
+    return ParentNode(BlockTag.DIV, result)
 
 def markdown_to_blocks(markdown):
     temp_markdown = markdown.split('\n')
@@ -139,12 +152,3 @@ def convert_block(block_type):
         case _:
             return paragraph_to_HTMLNode
 
-def markdown_to_HTMLNode(markdown):
-    blocks = markdown_to_blocks(markdown)
-    result = []
-
-    for i in blocks:
-        convert_func = convert_block(block_to_blocktype(i))
-        result.append(convert_func(i))
-
-    return ParentNode(BlockTag.DIV, result)

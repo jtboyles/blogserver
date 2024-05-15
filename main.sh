@@ -1,3 +1,4 @@
 #!/bin/zsh
 
 python src/main.py
+python server.py --dir public
