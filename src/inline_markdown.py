@@ -105,7 +105,7 @@ def split_nodes(old_nodes, text_type):
     if text_type == Text_Type.IMAGE:
         check_node = re.compile(r"(!\[[^\]]*?(?:image|img)[^\]]*?\]\([^\)]+\))")
     else:
-        check_node = re.compile(r"(!\[(?![^\]]*?image|img)[^\]]+\]\([^\)]+\))")
+        check_node = re.compile(r"(\[(?![^\]]*?image|img)[^\]]+\]\([^\)]+\))")
     add_node = lambda text, type, *url: TextNode(text, type, url[0] if url else None) if len(text) > 0 else None
 
     test_node = old_nodes
@@ -145,5 +145,5 @@ def extract_markdown(text, text_type):
     if text_type == Text_Type.IMAGE:
         result = re.findall(r"!\[([^\]]*(?:image|img)[^\]]*)\]\(([^\)]+)\)", text)
     else:
-        result = re.findall(r"!\[((?![^\]]*?image|img)[^\]]+)\]\(([^\)]+)\)", text)
+        result = re.findall(r"\[((?![^\]]*?image|img)[^\]]+)\]\(([^\)]+)\)", text)
     return result if len(result) > 0 else None

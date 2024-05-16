@@ -1,8 +1,7 @@
 import os
 import shutil
-import generate_page
+from generate_page import generate_pages_recursively
 from pathlib import Path
-from textnode import TextNode
 
 def print_file_path(path):
     temp_path = path.split('/')
@@ -55,4 +54,4 @@ if __name__ == "__main__":
 
     generate_static()
 
-    generate_page.generate_page(new_path('content/index.md'), new_path('template.html'), new_path('public/index.html'))
+    generate_pages_recursively(new_path('content/'), new_path('template.html'), new_path('public/'))
